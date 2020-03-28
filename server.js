@@ -1,12 +1,11 @@
 const express = require('express');
-const colors = require('colors');
 const connectDB = require('./config/db');
 const path = require('path');
 
 const app = express();
 
 // Connect Database
-connectDB('MongoDB Connected...'.bold.cyan);
+connectDB('MongoDB Connected...');
 
 // Init Middleware
 app.use(express.json({ extended: false }));
