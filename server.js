@@ -1,23 +1,30 @@
-const express = require("express");
-const colors = require("colors");
-const connectDB = require("./config/db");
+const express = require('express');
+const colors = require('colors');
+const connectDB = require('./config/db');
+const path = require('path');
 
 const app = express();
 
 // Connect Database
-connectDB("MongoDB Connected...".bold.cyan);
+connectDB('MongoDB Connected...'.bold.cyan);
 
 // Init Middleware
 app.use(express.json({ extended: false }));
 
-app.get("/", (req, res) =>
-  res.json({ msg: "Welcome to the Contact Keeper API!" })
-);
-
 // Define Routes
-app.use("/api/v1/users", require("./routes/users"));
-app.use("/api/v1/auth", require("./routes/auth"));
-app.use("/api/v1/contacts", require("./routes/contacts"));
+app.use('/api/v1/users', require('./routes/users'));
+app.use('/api/v1/auth', require('./routes/auth'));
+app.use('/api/v1/contacts', require('./routes/contacts'));
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  );
+}
 
 const PORT = process.env.PORT || 5000;
 
